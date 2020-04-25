@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  dkron:
+    image: dkron/dkron:v2.2.1
+    volumes:
+      - ./build/dkron-executor-pod:/etc/dkron/plugins/dkron-executor-pod
+    ports:
+      - 8080:8080
+      - 8946
+      - 6868
+    environment:
+      ENV: env_value
+    command: agent --server --bootstrap-expect=1 --log-level=debug
