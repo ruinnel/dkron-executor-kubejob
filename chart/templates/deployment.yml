@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: "{{ .Release.Namespace }}"
+  name: {{ template "dkron.name" . }}
+  labels:
+    app: {{ template "dkron.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "dkron.name" . }}
+  template:
+    metadata:
+      namespace: "{{ .Release.Namespace }}"
+      labels:
+        app: {{ template "dkron.name" . }}
+    spec:
+      serviceAccountName: {{ template "dkron.fullname" . }}
+      containers:
+      - name: {{ .Values.images.dkron.name }}
+        image: "{{ .Values.images.dkron.image }}:{{ .Values.images.dkron.tag }}"
+        imagePullPolicy: {{ default "Always" .Values.images.dkron.pullPolicy }}
+        args: ["agent"]
+        volumeMounts:
+          - name: dkron-config
+            readOnly: true
+            mountPath: /etc/dkron
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        - name: serf
+          containerPort: 8946
+          protocol: TCP
+        - name: between-agent
+          containerPort: 6868
+          protocol: TCP
+      volumes:
+      - name: dkron-config
+        configMap:
+          name: {{ template "dkron.name" . }}-config
+        items:
+          - key: dkron.yml
+            path: dkron.yml
+
+{{- if .Values.images.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.images.imagePullSecrets | indent 8 }}
+{{- end }}

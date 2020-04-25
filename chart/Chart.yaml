@@ -1,0 +1,9 @@
+apiVersion: v1
+description: Cronjob manager - dkron
+icon: https://dkron.io/img/dkron-logo.png
+name: dkron
+version: v2.2.1
+AppVersion: v2.2.1
+maintainers:
+  - name: ruinnel
+    email: ruinnel@gmail.com

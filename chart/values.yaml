@@ -1,0 +1,22 @@
+replicas: 1
+
+host: dkron.domain.com
+
+images:
+  dkron:
+    name: dkron
+    image: ruinnel/dkron
+    tag: v2.2.1
+
+service:
+  extraAnnotations: {}
+
+# ingress configuration for nginx-ingress-controller
+ingress:
+  extraAnnotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 5m
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "*"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1

@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: "{{ .Release.Namespace }}"
+  name: {{ template "dkron.name" . }}-config
+  labels:
+    app: {{ template "dkron.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+data:
+  dkron.yml: |
+    server: true
+    bootstrap-expect: 1
+    # data-dir: dkron.data
+    log-level: debug
+    # tags:
+    #  my-role: server
+    # encrypt: a-valid-key-generated-with-dkron-keygen
+
+    # retry-join: ["provider=k8s label_selector=\"role=dkron-agent\""]
+    # join:
+    #  - docker.for.mac.localhost
+    #   - 10.0.0.2
+    #   - 10.0.0.3
+    # raft-multiplier: 1
+    # webhook-url: https://hooks.slack.com/services/XXXXXX/XXXXXXX/XXXXXXXXXXXXXXXXXXXX
+    # webhook-payload: "payload={\"text\": \"{{.Report}}\", \"channel\": \"#foo\"}"
+    # webhook-headers: Content-Type:application/x-www-form-urlencoded
+    # mail-host: email-smtp.eu-west-1.amazonaws.com
+    # mail-port: 25
+    # mail-username": mailuser
+    # mail-password": mailpassword
+    # mail-from": cron@example.com
+    # mail-subject_prefix: [Dkron]
+

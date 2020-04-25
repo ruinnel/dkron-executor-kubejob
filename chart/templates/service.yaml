@@ -1,0 +1,25 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: "{{ .Release.Namespace }}"
+  name: {{ .Values.images.dkron.name }}
+  annotations:
+{{- if .Values.service.extraAnnotations }}
+{{ toYaml .Values.service.extraAnnotations | indent 4 }}
+{{- end }}
+spec:
+  selector:
+    app: {{ template "dkron.name" . }}
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+      name: http
+    - port: 8946
+      targetPort: 8946
+      protocol: TCP
+      name: serf
+    - port: 6868
+      targetPort: 6868
+      protocol: TCP
+      name: between-agent
