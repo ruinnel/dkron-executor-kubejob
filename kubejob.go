@@ -266,7 +266,6 @@ func (pe *KubeJob) connect(buffer *circbuf.Buffer) error {
 }
 
 func (pe *KubeJob) Execute(args *types.ExecuteRequest, cb plugin.StatusHelper) (*types.ExecuteResponse, error) {
-	// func (pe *KubeJob) Execute(args *types.ExecuteRequest) (*types.ExecuteResponse, error) {
 	output, err := circbuf.NewBuffer(maxBufSize)
 	if err != nil {
 		pe.logf(output, "create buffer fail - %v", err)
